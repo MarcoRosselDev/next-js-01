@@ -2,6 +2,7 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Search({ placeholder }: { placeholder: string }) {
 
@@ -9,7 +10,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const pathname = usePathname();
   const {replace} = useRouter();
 
-  function handleSearch(term:string) {
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+    
     //URLSearchParams es una API web que porvee metodos de manipulacion de querys.
     const params = new URLSearchParams(searchParams);
     if (term) {
@@ -17,9 +20,11 @@ export default function Search({ placeholder }: { placeholder: string }) {
     } else {
       params.delete('query');
     }
-    //console.log(term);
     replace(`${pathname}?${params.toString()}`);
-  }
+  }, 400);
+  // dependiendo de que tan rapido quiero que sea cambiar el tiempo de espera
+  // por defercto uno rapido seria de unos 400 milisegundos
+
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">
