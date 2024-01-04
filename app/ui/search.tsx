@@ -44,3 +44,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
     </div>
   );
 }
+
+// learn react :
+// https://www.youtube.com/watch?v=Bvwq_S0n2pk&t=1204s
